@@ -54,6 +54,7 @@ function QJAppPlayerBar() {
   //redux hooks
   const {
     currentSong,
+    currentSongIndex,
     sequence,
     playList,
     lyricIndex,
@@ -233,7 +234,8 @@ function QJAppPlayerBar() {
         setVisiable={setVisiable} 
         currentSong ={currentSong} 
         lyricList={lyricList}
-        lyricIndex={lyricIndex} />
+        lyricIndex={lyricIndex}
+        currentSongIndex={currentSongIndex} />
     }
   </AppPlayerBarWrapper>
   )

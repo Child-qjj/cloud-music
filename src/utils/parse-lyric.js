@@ -14,10 +14,27 @@ export function ParseLyric(lyricString) {
 
     const time = time1 + time2 + time3;
     const content = line.replace(parseExp,"").trim();
-    const lineObj = { time, content };
+    const id = uuid();
+    const lineObj = { id , time , content };
     lyrics.push(lineObj);
   }
   return lyrics;
+}
+ function	uuid() {
+	var i, random;
+	var uuid = '';
+ 
+	for (i = 0; i < 32; i++) {
+		random = Math.random() * 16 | 0;
+		if (i === 8 || i === 12 || i === 16 || i === 20) {
+			uuid += '-';
+		}
+		// eslint-disable-next-line no-mixed-operators
+		uuid += (i === 12 ? 4 : (i === 16 ? (random & 3 | 8) : random))
+			.toString(16);
+	}
+ 
+	return uuid;
 }
 
 // [00:00.000] 作曲 : 朱斌语

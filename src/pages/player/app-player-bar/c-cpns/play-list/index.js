@@ -16,23 +16,38 @@ import {
 
 export default memo(function QJPlayList(props) {
 
-  const { playlist=[] , currentSong={} , setVisiable ,lyricList=[] , lyricIndex = 0} = props;
+  const { playlist=[] , currentSong={} , setVisiable ,lyricList=[] , lyricIndex = 0 ,currentSongIndex = 0} = props;
 
   const lyricRef = useRef();
-
+  const songRef = useRef();
   
   const closeList = () => {
     setVisiable(false);
   } 
   useEffect(() => {
-    const cNodeHeight = lyricRef.current.childNodes && lyricRef.current.childNodes[0].clientHeight;
+    const ulHeight = songRef.current.childNodes && songRef.current.childNodes[0];
+    const cNodeHeight = ulHeight.childNodes && ulHeight.childNodes[0].clientHeight ;
+    const songHeight = songRef.current.clientHeight;
+    const tempHeight = Math.floor(songHeight/cNodeHeight);
+
+    console.log(tempHeight);
+    // lyricRef.current.scrollTop += 32;
+    if (tempHeight<=currentSongIndex) {
+      songRef.current.scrollTop = cNodeHeight*(currentSongIndex);
+    }else{
+      songRef.current.scrollTop = 0;
+    }
+  }, [currentSongIndex])
+
+  useEffect(() => {
+    const cNodeHeight = lyricRef.current.childNodes[0] && lyricRef.current.childNodes[0].clientHeight;
     const lyricHeight = lyricRef.current.clientHeight;
     const tempHeight = Math.floor(lyricHeight/cNodeHeight);
     // lyricRef.current.scrollTop += 32;
-    if (tempHeight<lyricIndex) {
+    if (tempHeight<=lyricIndex) {
       lyricRef.current.scrollTop = cNodeHeight*(lyricIndex-tempHeight/2);
     }else{
-      return;
+      lyricRef.current.scrollTop = 0;
     }
   }, [lyricIndex])
 
@@ -57,7 +72,7 @@ export default memo(function QJPlayList(props) {
       <div className="play-list playlist_bg">
         <img src={getPlayListBackground(currentSong.al && currentSong.al.pic_str)} alt="" className="img_bg"/>
         <div className="mask"></div>
-        <Contentleft className="songs-list">
+        <Contentleft className="songs-list" ref={songRef}>
           <ul>
               {
                 playlist.map((song,index)=>{
@@ -97,7 +112,7 @@ export default memo(function QJPlayList(props) {
           {
             lyricList.map((item,index) => {
               return (
-                <p key={ item.time } className={ index === lyricIndex?"active":""}>{item.content}</p>
+                <p key={ item.id } className={ index === lyricIndex?"active":""}>{item.content}</p>
               )
             })
           }
