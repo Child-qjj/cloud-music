@@ -29,8 +29,6 @@ export default memo(function QJPlayList(props) {
     const cNodeHeight = ulHeight.childNodes && ulHeight.childNodes[0].clientHeight ;
     const songHeight = songRef.current.clientHeight;
     const tempHeight = Math.floor(songHeight/cNodeHeight);
-
-    console.log(tempHeight);
     // lyricRef.current.scrollTop += 32;
     if (tempHeight<=currentSongIndex) {
       songRef.current.scrollTop = cNodeHeight*(currentSongIndex);
